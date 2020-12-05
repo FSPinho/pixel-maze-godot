@@ -8,9 +8,6 @@
 [node name="Game" type="Node"]
 script = ExtResource( 3 )
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 432, 720 )
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 544, 960 )
 current = true
@@ -18,3 +15,5 @@ current = true
 [node name="SwipeDetector" parent="." instance=ExtResource( 2 )]
 
 [node name="World" parent="." instance=ExtResource( 4 )]
+
+[node name="Player" parent="World" instance=ExtResource( 1 )]
