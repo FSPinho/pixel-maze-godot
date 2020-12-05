@@ -1,14 +1,25 @@
 extends Node2D
 
+##
+# Constants
 var SWIPE_SIZE = 128
-var SWIPE_UP = "UP"
-var SWIPE_DOWN = "DOWN"
-var SWIPE_LEFT = "LEFT"
-var SWIPE_RIGHT = "RIGHT"
 
+enum SwipeDirection {
+	SWIPE_UP = 1,
+	SWIPE_DOWN = 2,
+	SWIPE_LEFT = 3,
+	SWIPE_RIGHT = 4,
+}
+
+##
+# Properties
 var pressed = false
 var swipe_start_position = Vector2(0, 0)
 var swipe_end_position = Vector2(0, 0)
+
+##
+# Signals
+signal swipe
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -20,7 +31,22 @@ func _input(event):
 				_handle_swipe(swipe_start_position, swipe_end_position)
 		
 		pressed = event.pressed
+	
+	elif event is InputEventKey and not event.pressed:
+		var direction = null
 		
+		if event.scancode == KEY_RIGHT:
+			direction = SwipeDirection.SWIPE_RIGHT
+		if event.scancode == KEY_UP:
+			direction = SwipeDirection.SWIPE_UP
+		if event.scancode == KEY_LEFT:
+			direction = SwipeDirection.SWIPE_LEFT
+		if event.scancode == KEY_DOWN:
+			direction = SwipeDirection.SWIPE_DOWN
+		
+		if direction:
+			emit_signal("swipe", direction)
+			
 	update()
 
 func _handle_swipe(start, end):
@@ -35,22 +61,16 @@ func _handle_swipe(start, end):
 		direction = null
 	
 		if _is_between(swipe_angle, 0, 45) or _is_between(swipe_angle, 315, 360):
-			direction = SWIPE_RIGHT
+			direction = SwipeDirection.SWIPE_RIGHT
 		if _is_between(swipe_angle, 45, 135):
-			direction = SWIPE_UP
+			direction = SwipeDirection.SWIPE_UP
 		if _is_between(swipe_angle, 135, 225):
-			direction = SWIPE_LEFT
+			direction = SwipeDirection.SWIPE_LEFT
 		if _is_between(swipe_angle, 225, 315):
-			direction = SWIPE_DOWN
+			direction = SwipeDirection.SWIPE_DOWN
 		
 		if direction:
-			print (direction)
+			emit_signal("swipe", direction)
 
 func _is_between(n, x, y):
 	return n >= x and n <= y
-
-func _draw():
-	if swipe_start_position:
-		draw_circle(swipe_start_position, 4, Color.red)
-	if swipe_end_position:
-		draw_circle(swipe_end_position, 4, Color.blue)
