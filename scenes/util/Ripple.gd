@@ -18,13 +18,13 @@ func _ready():
 func _draw():
 	if shape == "circle":
 		draw_arc(
-			Vector2(0, 0), lerp(size, size_max, progress) / 2, 0, PI * 1.995, Global.CIRCLE_QUALITY,
+			Vector2(0, 0), lerp(size, size_max, progress) / 2, 0, PI * 2, Global.CIRCLE_QUALITY,
 			Color(1, 1, 1, lerp(1, 0, progress)), 8, true
 		)
 		
 		draw_circle(
 			Vector2(0, 0), lerp(size, size_max, progress) / 2,
-			Color(1, 1, 1, lerp(0.25, 0, progress))
+			Color(1, 1, 1, lerp(0.4, 0, progress))
 		)
 	
 func _process(delta):

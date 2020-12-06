@@ -20,7 +20,7 @@ func _draw():
 func _physics_process(delta):
 	if target:
 		self.position = target.position_delayed * -1 + position_offset
-		$Background.position = target.position_delayed * 0.1
+		$Background.position = target.position_delayed * 0.4
 
 
 func initialize(bh, bv):
@@ -154,7 +154,7 @@ func initialize(bh, bv):
 func create_block(i, j, invert):
 	var block = Block.instance()
 	
-	block.initialize(Global.BLOCK_SIZE, Global.BLOCK_SIZE)
+	block.initialize(Global.BLOCK_SIZE, Global.BLOCK_SIZE, randi() % 8 == 0)
 	
 	if invert:
 		block.position = Vector2(

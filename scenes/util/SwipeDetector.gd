@@ -2,7 +2,7 @@ extends Node2D
 
 ##
 # Constants
-var SWIPE_SIZE = 128
+var SWIPE_SIZE = 64
 
 enum SwipeDirection {
 	SWIPE_UP = 1,

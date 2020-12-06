@@ -35,7 +35,6 @@ window/stretch/aspect="keep"
 
 [physics]
 
-common/physics_fps=120
 2d/physics_engine="GodotPhysics"
 2d/thread_model=2
 
