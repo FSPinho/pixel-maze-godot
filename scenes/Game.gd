@@ -5,7 +5,7 @@ extends Node
 
 
 func _ready():
-	$World.set_size(Global.VIEWPORT_WIDTH, Global.VIEWPORT_HEIGHT)
+	$World.initialize(21, 21)
 	$World.position_offset = Vector2(Global.VIEWPORT_WIDTH / 2.0, Global.VIEWPORT_HEIGHT / 2.0)
 	$World.target = $World/Player
 	$World/Player.bounds = $World.bounds
