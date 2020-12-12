@@ -26,8 +26,8 @@ func _physics_process(delta):
 func initialize(bh, bv):
 	blocks_horizontal = bh
 	blocks_vertical = bv
-	var w = Global.BLOCK_SIZE * bh
-	var h = Global.BLOCK_SIZE * bv
+	var w = G.BLOCK_SIZE * bh
+	var h = G.BLOCK_SIZE * bv
 	
 	$Collision1.disabled = false
 	$Collision1.shape.extents = Vector2(w / 2, collision_width / 2)
@@ -144,29 +144,19 @@ func initialize(bh, bv):
 	for i in range(bv):
 		for j in range(bh):
 			if matrix[i][j].block:
-				add_child(create_block(i, j, false))
+				add_child(create_block(i, j))
 				
-				var block_background = create_block(i, j, true)
-				block_background.set_inactive()
-				$Background.add_child(block_background)
-		
 
-func create_block(i, j, invert):
+func create_block(i, j):
 	var block = Block.instance()
 	
-	block.initialize(Global.BLOCK_SIZE, Global.BLOCK_SIZE, randi() % 8 == 0)
+	block.initialize(G.BLOCK_SIZE, G.BLOCK_SIZE, randi() % 8 == 0)
 	
-	if invert:
-		block.position = Vector2(
-			(blocks_horizontal - j) * Global.BLOCK_SIZE + Global.BLOCK_SIZE / 2 - bounds.size.x / 2,
-			(blocks_vertical - i) * Global.BLOCK_SIZE + Global.BLOCK_SIZE / 2 - bounds.size.y / 2
-		)
-	else:
-		block.position = Vector2(
-			j * Global.BLOCK_SIZE + Global.BLOCK_SIZE / 2 - bounds.size.x / 2,
-			i * Global.BLOCK_SIZE + Global.BLOCK_SIZE / 2 - bounds.size.y / 2
-		)
-	
+	block.position = Vector2(
+		j * G.BLOCK_SIZE + G.BLOCK_SIZE / 2 - bounds.size.x / 2,
+		i * G.BLOCK_SIZE + G.BLOCK_SIZE / 2 - bounds.size.y / 2
+	)
+
 	return block
 		
 func check_around(matrix, i, j, ri, rj):

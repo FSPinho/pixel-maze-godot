@@ -4,13 +4,6 @@ extends Node2D
 # Constants
 var SWIPE_SIZE = 64
 
-enum SwipeDirection {
-	SWIPE_UP = 1,
-	SWIPE_DOWN = 2,
-	SWIPE_LEFT = 3,
-	SWIPE_RIGHT = 4,
-}
-
 ##
 # Properties
 var pressed = false
@@ -36,13 +29,13 @@ func _input(event):
 		var direction = null
 		
 		if event.scancode == KEY_RIGHT:
-			direction = SwipeDirection.SWIPE_RIGHT
+			direction = G.SwipeDirection.SWIPE_RIGHT
 		if event.scancode == KEY_UP:
-			direction = SwipeDirection.SWIPE_UP
+			direction = G.SwipeDirection.SWIPE_UP
 		if event.scancode == KEY_LEFT:
-			direction = SwipeDirection.SWIPE_LEFT
+			direction = G.SwipeDirection.SWIPE_LEFT
 		if event.scancode == KEY_DOWN:
-			direction = SwipeDirection.SWIPE_DOWN
+			direction = G.SwipeDirection.SWIPE_DOWN
 		
 		if direction:
 			emit_signal("swipe", direction)
@@ -61,13 +54,13 @@ func _handle_swipe(start, end):
 		direction = null
 	
 		if _is_between(swipe_angle, 0, 45) or _is_between(swipe_angle, 315, 360):
-			direction = SwipeDirection.SWIPE_RIGHT
+			direction = G.SwipeDirection.SWIPE_RIGHT
 		if _is_between(swipe_angle, 45, 135):
-			direction = SwipeDirection.SWIPE_UP
+			direction = G.SwipeDirection.SWIPE_UP
 		if _is_between(swipe_angle, 135, 225):
-			direction = SwipeDirection.SWIPE_LEFT
+			direction = G.SwipeDirection.SWIPE_LEFT
 		if _is_between(swipe_angle, 225, 315):
-			direction = SwipeDirection.SWIPE_DOWN
+			direction = G.SwipeDirection.SWIPE_DOWN
 		
 		if direction:
 			emit_signal("swipe", direction)

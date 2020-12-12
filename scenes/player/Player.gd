@@ -4,7 +4,7 @@ var Ripple = preload("res://scenes/util/Ripple.tscn")
 
 ##
 # Constants
-var SPEED_BASE = Global.BLOCK_SIZE * 0.6
+var SPEED_BASE = G.BLOCK_SIZE * 0.6
 var TAIL_SIZE = 16.0
 var TAIL_VISIBLE_SIZE = 16.0
 var TAIL_VISIBLE_SCALE = 0.5
@@ -12,7 +12,7 @@ var TAIL_VISIBLE_SCALE = 0.5
 ##
 # Properties
 var bounds = null
-var size = Global.BLOCK_SIZE * 0.15
+var size = G.BLOCK_SIZE * 0.15
 var size_scale = 1.0
 var position_delayed = self.position
 var direction = Vector2(0.0, 0.0)
@@ -53,7 +53,7 @@ func _draw_circle(pos = Vector2(0, 0), scale = 1, alpha = 1):
 	draw_arc(
 		pos, 
 		size / 2 * scale * size_scale, 0, 2 * PI, 
-		Global.CIRCLE_QUALITY, 
+		G.CIRCLE_QUALITY, 
 		_color, 2, true
 	)
 
@@ -98,7 +98,7 @@ func _physics_process(delta):
 				$SoundCollision.play()
 			do_ripple()
 			
-			if _collision.collider.is_in_group(Global.GROUP_ENEMY):
+			if _collision.collider.is_in_group(G.GROUP_ENEMY):
 				die()
 		
 		if _collision and not speed_up_half:

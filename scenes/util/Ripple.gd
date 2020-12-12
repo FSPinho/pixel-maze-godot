@@ -13,12 +13,12 @@ var active = false
 var target_position = Vector2(0, 0)
 
 func _ready():
-	add_to_group(Global.GROUP_RIPPLE)
+	add_to_group(G.GROUP_RIPPLE)
 
 func _draw():
 	if shape == "circle":
 		draw_arc(
-			Vector2(0, 0), lerp(size, size_max, progress) / 2, 0, PI * 2, Global.CIRCLE_QUALITY,
+			Vector2(0, 0), lerp(size, size_max, progress) / 2, 0, PI * 2, G.CIRCLE_QUALITY,
 			Color(1, 1, 1, lerp(1, 0, progress)), 8, true
 		)
 		
