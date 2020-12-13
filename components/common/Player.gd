@@ -1,10 +1,11 @@
 extends KinematicBody2D
 
-var Ripple = preload("res://scenes/util/Ripple.tscn")
+var Ripple = preload("res://components/common/Ripple.tscn")
+var BLOCK_GLASS_TEXTURE = preload("res://sprites/brick-glass.png")
 
 ##
 # Constants
-var SPEED_BASE = G.BLOCK_SIZE * 0.6
+var SPEED_BASE = Config.BLOCK_SIZE * 0.6
 var TAIL_SIZE = 16.0
 var TAIL_VISIBLE_SIZE = 16.0
 var TAIL_VISIBLE_SCALE = 0.5
@@ -12,7 +13,7 @@ var TAIL_VISIBLE_SCALE = 0.5
 ##
 # Properties
 var bounds = null
-var size = G.BLOCK_SIZE * 0.15
+var size = Config.BLOCK_SIZE * 0.15
 var size_scale = 1.0
 var position_delayed = self.position
 var direction = Vector2(0.0, 0.0)
@@ -39,11 +40,11 @@ var collision_play_delay = 0.6
 var move_elapsed = 0.6
 var move_delay = 0.6
 
-var dead = false
-
-
 func _ready():
 	$Collision.shape.radius = size / 2
+	$Destroyable/Particles.texture = BLOCK_GLASS_TEXTURE
+	$Destroyable/Particles.process_material.scale = 0.05
+	$SwipeDetector.connect("on_swipe", self, "set_direction")
 
 func _draw_circle(pos = Vector2(0, 0), scale = 1, alpha = 1):
 	var _color = Color(color)
@@ -53,7 +54,7 @@ func _draw_circle(pos = Vector2(0, 0), scale = 1, alpha = 1):
 	draw_arc(
 		pos, 
 		size / 2 * scale * size_scale, 0, 2 * PI, 
-		G.CIRCLE_QUALITY, 
+		Config.CIRCLE_QUALITY, 
 		_color, 2, true
 	)
 
@@ -82,27 +83,18 @@ func _process(delta):
 	update()
 
 func _physics_process(delta):
-	
-	if dead:
-		size_scale = max(size_scale - 1 * delta, 0)
-	
 	var _direction = direction.normalized()
 	var _speed = _sigmoid(speed, speed_min, speed_max)
 	
-	if not dead and abs(_direction.x + _direction.y) > 0:
+	size_scale = $Destroyable.target_scale
+	
+	if $Destroyable.alive and abs(_direction.x + _direction.y) > 0:
 		var _collision = self.move_and_collide(direction * _speed * delta)
 		 
 		if _collision and !did_collide:
-			if collision_play_elapsed > collision_play_delay:
-				collision_play_elapsed = 0
-				$SoundCollision.play()
-			do_ripple()
-			
-			if _collision.collider.is_in_group(G.GROUP_ENEMY):
-				die()
+			on_collision(_collision)
 		
 		if _collision and not speed_up_half:
-			_collision.collider_shape
 			direction *= 0.2
 		
 		did_collide = not not _collision
@@ -126,6 +118,8 @@ func _physics_process(delta):
 	
 	collision_play_elapsed += delta
 	move_elapsed += delta
+	
+	Store.set_game_player_position(self.position_delayed)
 
 func _sigmoid(n, _min, _max):
 	var E = 2.718281
@@ -142,23 +136,47 @@ func set_speed(s):
 	speed = s
 
 func set_direction(d):
-	if move_elapsed <= move_delay and d == direction:
-		speed_up = true
-	else:
-		speed_up_half = true
-		
-	move_elapsed = 0
-	direction = d
-	idle = false
+	var direction = Vector2(0, 0)
 	
-	if not dead:
+	if d == Config.SwipeDirection.SWIPE_UP:
+		direction = Vector2(0, -1)	
+	if d == Config.SwipeDirection.SWIPE_DOWN:
+		direction = Vector2(0, 1)
+	if d == Config.SwipeDirection.SWIPE_LEFT:
+		direction = Vector2(-1, 0)
+	if d == Config.SwipeDirection.SWIPE_RIGHT:
+		direction = Vector2(1, 0)
+	
+	if self.move_elapsed <= self.move_delay and direction == self.direction:
+		self.speed_up = true
+	else:
+		self.speed_up_half = true
+		
+	self.move_elapsed = 0
+	self.direction = direction
+	self.idle = false
+	
+	if $Destroyable.alive:
 		$SoundMove.play()
 	
 func do_ripple():
 	var ripple = Ripple.instance()
 	add_child(ripple)
 	ripple.start(size, size * 8, "circle")
+
+func on_collision(collision: KinematicCollision2D):
+	do_ripple()
 	
+	if collision_play_elapsed > collision_play_delay:
+		collision_play_elapsed = 0
+		$SoundCollision.play()
+		
+	if collision.collider.is_in_group(Config.GROUP_BLOCK_GLASS) or \
+		collision.collider.is_in_group(Config.GROUP_BLOCK_10) or \
+		collision.collider.is_in_group(Config.GROUP_BLOCK_100) or \
+		collision.collider.is_in_group(Config.GROUP_BLOCK_1000):
+		collision.collider.destroy()
+	
+
 func die():
-	dead = true
-	$Particles.emitting = true
+	$Destroyable.die()

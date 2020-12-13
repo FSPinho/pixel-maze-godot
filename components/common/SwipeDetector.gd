@@ -1,6 +1,10 @@
 extends Node2D
 
 ##
+# Signals
+signal on_swipe
+
+##
 # Constants
 var SWIPE_SIZE = 64
 
@@ -9,10 +13,6 @@ var SWIPE_SIZE = 64
 var pressed = false
 var swipe_start_position = Vector2(0, 0)
 var swipe_end_position = Vector2(0, 0)
-
-##
-# Signals
-signal swipe
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -29,16 +29,16 @@ func _input(event):
 		var direction = null
 		
 		if event.scancode == KEY_RIGHT:
-			direction = G.SwipeDirection.SWIPE_RIGHT
+			direction = Config.SwipeDirection.SWIPE_RIGHT
 		if event.scancode == KEY_UP:
-			direction = G.SwipeDirection.SWIPE_UP
+			direction = Config.SwipeDirection.SWIPE_UP
 		if event.scancode == KEY_LEFT:
-			direction = G.SwipeDirection.SWIPE_LEFT
+			direction = Config.SwipeDirection.SWIPE_LEFT
 		if event.scancode == KEY_DOWN:
-			direction = G.SwipeDirection.SWIPE_DOWN
+			direction = Config.SwipeDirection.SWIPE_DOWN
 		
 		if direction:
-			emit_signal("swipe", direction)
+			emit_signal("on_swipe", direction)
 			
 	update()
 
@@ -54,16 +54,16 @@ func _handle_swipe(start, end):
 		direction = null
 	
 		if _is_between(swipe_angle, 0, 45) or _is_between(swipe_angle, 315, 360):
-			direction = G.SwipeDirection.SWIPE_RIGHT
+			direction = Config.SwipeDirection.SWIPE_RIGHT
 		if _is_between(swipe_angle, 45, 135):
-			direction = G.SwipeDirection.SWIPE_UP
+			direction = Config.SwipeDirection.SWIPE_UP
 		if _is_between(swipe_angle, 135, 225):
-			direction = G.SwipeDirection.SWIPE_LEFT
+			direction = Config.SwipeDirection.SWIPE_LEFT
 		if _is_between(swipe_angle, 225, 315):
-			direction = G.SwipeDirection.SWIPE_DOWN
+			direction = Config.SwipeDirection.SWIPE_DOWN
 		
 		if direction:
-			emit_signal("swipe", direction)
+			emit_signal("on_swipe", direction)
 
 func _is_between(n, x, y):
 	return n >= x and n <= y
