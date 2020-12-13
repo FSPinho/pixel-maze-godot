@@ -7,11 +7,14 @@ const PlayerScene = preload("res://components/common/Player.tscn")
 const Player_ = preload("res://components/common/Player.gd")
 const WorldScene = preload("res://components/common/World.tscn")
 const World_ = preload("res://components/common/World.gd")
+const MapScene = preload("res://components/common/Map.tscn")
+const Map_ = preload("res://components/common/Map.gd")
 
 ##
 # Properties
 var player: Player_ = null
 var world: World_ = null
+var map: Map_ = null
 
 func _ready():
 	Store.connect("on_game_start", self, "on_game_start")
@@ -27,8 +30,12 @@ func on_game_start():
 
 	self.player = PlayerScene.instance()
 	self.player.position = Store.game_player_position
-	self.world.add_child(player)	
+	self.world.add_child(self.player)	
 	Log.i("Game - Player created...", 3)
+	
+	self.map = MapScene.instance()
+	self.add_child(self.map)	
+	Log.i("Game - Map created...", 3)
 
 func on_game_end():
 	pass

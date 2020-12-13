@@ -24,7 +24,7 @@ var speed = SPEED_BASE
 var speed_min = SPEED_BASE
 var speed_max_half = SPEED_BASE * 2.5
 var speed_max = SPEED_BASE * 3
-var speed_decay = SPEED_BASE * 6
+var speed_decay = SPEED_BASE * 4
 var speed_up_half = false
 var speed_up = false
 

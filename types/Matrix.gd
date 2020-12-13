@@ -32,8 +32,6 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 			var percent_100 = percent_10 + 1000 * Config.BLOCK_100_PERCENT
 			var percent_1000 = percent_100 + 1000 * Config.BLOCK_1000_PERCENT
 			
-			print (percent_glass, " ", percent_10, " ", percent_100, " ", percent_1000)
-			
 			if rand <= percent_glass:
 				type = Config.BlockType.GLASS
 				self._percent[Config.BlockType.GLASS] += 1

@@ -23,10 +23,6 @@ func _init():
 	Log.i("Initializing store")
 	Log.i("DONE.\n", 2)
 	
-func _process(delta):
-	Config.VIEWPORT_WIDTH = OS.get_window_size().x
-	Config.VIEWPORT_HEIGHT = OS.get_window_size().y
-
 func start():
 	Log.i("Starting game...")
 	

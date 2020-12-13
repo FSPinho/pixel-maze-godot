@@ -4,16 +4,16 @@ extends Node
 # Constants
 
 const APP_NAME = "Pixel Maze"
-var VIEWPORT_WIDTH = OS.get_window_size().x
-var VIEWPORT_HEIGHT = OS.get_window_size().y
+var VIEWPORT_WIDTH = max(OS.get_window_size().x, 1080)
+var VIEWPORT_HEIGHT = max(OS.get_window_size().y, 1920)
 
 const BLOCK_SIZE = 560.0
 const BLOCK_GLASS_PERCENT = 0.25
 const BLOCK_10_PERCENT = 0.1
 const BLOCK_100_PERCENT = 0.05
 const BLOCK_1000_PERCENT = 0.025
-const WORLD_WIDTH = 9
-const WORLD_HEIGHT = 9
+const WORLD_WIDTH = 21
+const WORLD_HEIGHT = 21
 
 const CIRCLE_QUALITY = 64
 
