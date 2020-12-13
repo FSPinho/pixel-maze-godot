@@ -109,7 +109,7 @@ func set_matrix_block(matrix_block: MatrixBlock):
 	
 	if self.sprites.size() > 1:
 		$Collision.shape = CircleShape2D.new()
-		$Collision.shape.radius = Config.BLOCK_SIZE / 2 * 0.85
+		$Collision.shape.radius = Config.BLOCK_SIZE / 2 * 0.86
 	else:
 		$Collision.shape = RectangleShape2D.new()
 		$Collision.shape.extents = Vector2(
