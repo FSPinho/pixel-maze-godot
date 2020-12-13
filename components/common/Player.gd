@@ -5,7 +5,7 @@ var BLOCK_GLASS_TEXTURE = preload("res://sprites/brick-glass.png")
 
 ##
 # Constants
-var SPEED_BASE = Config.BLOCK_SIZE * 0.6
+var SPEED_BASE = Config.BLOCK_SIZE * 1.2
 var TAIL_SIZE = 16.0
 var TAIL_VISIBLE_SIZE = 16.0
 var TAIL_VISIBLE_SCALE = 0.5
@@ -177,6 +177,14 @@ func on_collision(collision: KinematicCollision2D):
 		collision.collider.is_in_group(Config.GROUP_BLOCK_1000):
 		collision.collider.destroy()
 	
-
+	if collision.collider.is_in_group(Config.GROUP_BLOCK_10):
+		Store.add_game_points(10)
+	
+	if collision.collider.is_in_group(Config.GROUP_BLOCK_100):
+		Store.add_game_points(100)
+	
+	if collision.collider.is_in_group(Config.GROUP_BLOCK_1000):
+		Store.add_game_points(1000)
+	 
 func die():
 	$Destroyable.die()

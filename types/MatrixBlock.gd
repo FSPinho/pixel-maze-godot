@@ -5,6 +5,7 @@ var alive: bool = true
 var visited: bool = false
 var instance = null
 var instance_mapped = null
+var exit = false
 
 func _init(type = Config.BlockType.STONE, alive = true):
 	self.type = type
@@ -12,3 +13,4 @@ func _init(type = Config.BlockType.STONE, alive = true):
 	self.visited = false
 	self.instance = null
 	self.instance_mapped = false
+	self.exit = false

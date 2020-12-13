@@ -15,6 +15,9 @@ signal on_game_end
 var game_state: int = Config.GameState.IDLE
 var game_matrix: Matrix = null
 var game_player_position: Vector2 = Vector2(0, 0)
+var game_show_exit = false
+var game_points = 0.0
+var game_points_show_exit = 500.0
 
 ##
 # Methods
@@ -60,3 +63,14 @@ func set_game_player_position(pos: Vector2) -> void:
 
 func get_game_player_position() -> Vector2:
 	return self.game_player_position
+
+func set_game_show_exit(show_exit) -> void:
+	self.game_show_exit = show_exit
+	
+func get_game_show_exit() -> bool:
+	return self.game_show_exit
+
+func add_game_points(points) -> void:
+	self.game_points += points
+
+

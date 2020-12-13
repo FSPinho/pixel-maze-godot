@@ -13,6 +13,9 @@ var _percent = {
 	Config.BlockType._1000: 0,
 }
 
+var start = [0, 0]
+var end = [0, 0]
+
 func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 	self.width = w
 	self.height = h
@@ -55,12 +58,19 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 	
 	var mi: float = ceil(self.height / 2)
 	var mj: float = ceil(self.height / 2)
+	
+	self.start = [mi, mj]
+	
 	var path: Array = []
+	var path_max: Array = []
 	var canGo: bool = true
 	
 	var deep: int = 0
 	
 	while canGo:
+		if path.size() > path_max.size():
+			path_max = path.duplicate(true)
+		
 		var block: MatrixBlock = self.get_block(mi, mj)
 		self.get_block(mi, mj).type = Config.BlockType.NONE
 		
@@ -130,6 +140,10 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 		deep += 1
 		if deep > 10000:
 			return 
+
+	var end = path_max[path_max.size() - 1]
+	self.end = [end[0], end[1]]
+	self.get_block(end[0], end[1]).exit = true
 
 func _check_around(i, j, ri, rj):
 	var near = 0
