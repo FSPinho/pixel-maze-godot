@@ -40,6 +40,8 @@ window/stretch/aspect="expand"
 
 2d/physics_engine="GodotPhysics"
 2d/thread_model=2
+2d/default_gravity=0
+2d/default_gravity_vector=Vector2( 0, 0 )
 
 [rendering]
 

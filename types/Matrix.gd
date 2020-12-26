@@ -20,6 +20,13 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 	self.width = w
 	self.height = h
 	
+	var bounds = Rect2(
+		Config.BLOCK_SIZE * Config.WORLD_WIDTH / -2, 
+		Config.BLOCK_SIZE * Config.WORLD_HEIGHT / -2, 
+		Config.BLOCK_SIZE * Config.WORLD_WIDTH, 
+		Config.BLOCK_SIZE * Config.WORLD_HEIGHT
+	)
+	
 	if w <= 0 or h <= 0:
 		return
 	
@@ -54,7 +61,14 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 			else:
 				self._percent[Config.BlockType.STONE] += 1
 			
-			self.set_block(i, j, MatrixBlock.new(type))
+			var matrix_block = MatrixBlock.new(type)
+			
+			matrix_block.position = Vector2(
+				j * Config.BLOCK_SIZE + Config.BLOCK_SIZE / 2 - bounds.size.x / 2,
+				i * Config.BLOCK_SIZE + Config.BLOCK_SIZE / 2 - bounds.size.y / 2
+			)
+			
+			self.set_block(i, j, matrix_block)
 	
 	var mi: float = ceil(self.height / 2)
 	var mj: float = ceil(self.height / 2)

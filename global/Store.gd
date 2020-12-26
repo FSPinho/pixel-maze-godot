@@ -72,5 +72,8 @@ func get_game_show_exit() -> bool:
 
 func add_game_points(points) -> void:
 	self.game_points += points
+	
+	if self.game_points > self.game_points_show_exit:
+		self.game_show_exit = true
 
 
