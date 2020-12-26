@@ -13,9 +13,19 @@ var _percent = {
 	Config.BlockType._1000: 0,
 }
 
+var start = [0, 0]
+var end = [0, 0]
+
 func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 	self.width = w
 	self.height = h
+	
+	var bounds = Rect2(
+		Config.BLOCK_SIZE * Config.WORLD_WIDTH / -2, 
+		Config.BLOCK_SIZE * Config.WORLD_HEIGHT / -2, 
+		Config.BLOCK_SIZE * Config.WORLD_WIDTH, 
+		Config.BLOCK_SIZE * Config.WORLD_HEIGHT
+	)
 	
 	if w <= 0 or h <= 0:
 		return
@@ -31,8 +41,6 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 			var percent_10 = percent_glass + 1000 * Config.BLOCK_10_PERCENT
 			var percent_100 = percent_10 + 1000 * Config.BLOCK_100_PERCENT
 			var percent_1000 = percent_100 + 1000 * Config.BLOCK_1000_PERCENT
-			
-			print (percent_glass, " ", percent_10, " ", percent_100, " ", percent_1000)
 			
 			if rand <= percent_glass:
 				type = Config.BlockType.GLASS
@@ -53,16 +61,30 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 			else:
 				self._percent[Config.BlockType.STONE] += 1
 			
-			self.set_block(i, j, MatrixBlock.new(type))
+			var matrix_block = MatrixBlock.new(type)
+			
+			matrix_block.position = Vector2(
+				j * Config.BLOCK_SIZE + Config.BLOCK_SIZE / 2 - bounds.size.x / 2,
+				i * Config.BLOCK_SIZE + Config.BLOCK_SIZE / 2 - bounds.size.y / 2
+			)
+			
+			self.set_block(i, j, matrix_block)
 	
 	var mi: float = ceil(self.height / 2)
 	var mj: float = ceil(self.height / 2)
+	
+	self.start = [mi, mj]
+	
 	var path: Array = []
+	var path_max: Array = []
 	var canGo: bool = true
 	
 	var deep: int = 0
 	
 	while canGo:
+		if path.size() > path_max.size():
+			path_max = path.duplicate(true)
+		
 		var block: MatrixBlock = self.get_block(mi, mj)
 		self.get_block(mi, mj).type = Config.BlockType.NONE
 		
@@ -132,6 +154,10 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 		deep += 1
 		if deep > 10000:
 			return 
+
+	var end = path_max[path_max.size() - 1]
+	self.end = [end[0], end[1]]
+	self.get_block(end[0], end[1]).exit = true
 
 func _check_around(i, j, ri, rj):
 	var near = 0

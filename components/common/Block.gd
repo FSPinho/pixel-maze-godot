@@ -20,6 +20,7 @@ var active = true
 var bounds = Rect2(0, 0, 0, 0)
 var matrix_block: MatrixBlock = null
 var sprites = []
+var sprites_scale = 1
 
 func _ready():
 	bounds = Rect2(
@@ -31,6 +32,7 @@ func _process(delta):
 	for sprite in self.sprites:
 		sprite.scale.x = $Destroyable.target_scale
 		sprite.scale.y = $Destroyable.target_scale
+		sprite.scale *= self.sprites_scale
 	
 	if self.sprites.size() > 1:
 		var i = 1
@@ -104,19 +106,22 @@ func set_matrix_block(matrix_block: MatrixBlock):
 		self.sprites.append(sprite1)
 		self.sprites.append(sprite2)
 		self.sprites.append(sprite3)
-		
-	$Destroyable/Particles.process_material.scale = 0.5
 	
-	if self.sprites.size() > 1:
-		$Collision.shape = CircleShape2D.new()
-		$Collision.shape.radius = Config.BLOCK_SIZE / 2 * 0.86
+	if self.matrix_block.type == Config.BlockType.NONE:
+		$Collision.disabled = true
 	else:
-		$Collision.shape = RectangleShape2D.new()
-		$Collision.shape.extents = Vector2(
-			Config.BLOCK_SIZE / 2, Config.BLOCK_SIZE / 2
-		)
+		if self.sprites.size() > 1:
+			$Collision.shape = CircleShape2D.new()
+			$Collision.shape.radius = Config.BLOCK_SIZE / 2 * 0.86
+		else:
+			$Collision.shape = RectangleShape2D.new()
+			$Collision.shape.extents = Vector2(
+				Config.BLOCK_SIZE / 2, Config.BLOCK_SIZE / 2
+			)
 	
 	for sprite in self.sprites:
+		self.sprites_scale = Vector2(Config.BLOCK_SIZE, Config.BLOCK_SIZE) / sprite.texture.get_size()
+		$Destroyable/Particles.process_material.scale = 0.5 * self.sprites_scale.x
 		add_child(sprite)
 	
 func destroy():

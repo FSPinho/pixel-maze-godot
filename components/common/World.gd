@@ -13,6 +13,8 @@ var collision_width = 96
 var radar_block_size = 4
 var update_delay = 1.0
 var update_elapsed = 0.0
+var process_half_delay = 0.5
+var process_half_elapsed = 0.5
 
 func _draw():
 	draw_rect(
@@ -25,37 +27,35 @@ func _physics_process(delta):
 	self.position = target * -1 + position_offset
 	$Background.position = target * 0.4
 	
-func _process(delta):
-	self.position_offset = Vector2(
-		Config.VIEWPORT_WIDTH / 2,
-		Config.VIEWPORT_HEIGHT / 2
-	)
+func _process(delta):	
+	process_half_elapsed += delta
+	if process_half_elapsed >= process_half_delay:
+		process_half_elapsed = 0.0
+		_process_half()
 	
+func _process_half():
 	for i in range(Config.WORLD_HEIGHT):
 		for j in range(Config.WORLD_WIDTH):
-			var matrixBlock = Store.get_game_block(i, j)
-			if matrixBlock.type:
-				var position = Vector2(
-					j * Config.BLOCK_SIZE + Config.BLOCK_SIZE / 2 - bounds.size.x / 2,
-					i * Config.BLOCK_SIZE + Config.BLOCK_SIZE / 2 - bounds.size.y / 2
-				)
-				var position_real = position + self.position
-				
-				var existing = matrixBlock.instance
-				var is_out = \
-					position_real.x < -Config.BLOCK_SIZE * 4 or \
-					position_real.y < -Config.BLOCK_SIZE * 4 or \
-					position_real.x > Config.VIEWPORT_WIDTH + Config.BLOCK_SIZE * 4 or \
-					position_real.y > Config.VIEWPORT_HEIGHT + Config.BLOCK_SIZE * 4
-				
-				if is_out: 
-					if existing:
-						existing.queue_free()
-				else:
-					if not existing and matrixBlock.alive:
-						var block = create_block(position, matrixBlock)
-						Store.get_game_block(i, j).instance = block
-						add_child(block)
+			var matrix_block = Store.get_game_block(i, j)
+			var position = matrix_block.position
+			var position_real = position + self.position
+			
+			matrix_block.instance
+			var is_out = \
+				position_real.x < -Config.BLOCK_SIZE * 2 or \
+				position_real.y < -Config.BLOCK_SIZE * 2 or \
+				position_real.x > Config.VIEWPORT_WIDTH + Config.BLOCK_SIZE * 2 or \
+				position_real.y > Config.VIEWPORT_HEIGHT + Config.BLOCK_SIZE * 2
+			
+			if is_out: 
+				if matrix_block.instance:
+					matrix_block.instance.queue_free()
+					matrix_block.instance = null
+			else:
+				if not matrix_block.instance and matrix_block.alive:
+					var block = create_block(position, matrix_block)
+					matrix_block.instance = block
+					add_child(block)
 
 func _ready():
 	var w = Config.BLOCK_SIZE * Config.WORLD_WIDTH
@@ -80,6 +80,11 @@ func _ready():
 	bounds = Rect2(w / -2, h / -2, w, h)
 	$Background/Texture.rect_position = bounds.position
 	$Background/Texture.rect_size = bounds.size
+	
+	self.position_offset = Vector2(
+		Config.VIEWPORT_WIDTH / 2,
+		Config.VIEWPORT_HEIGHT / 2
+	)
 
 func create_block(position, matrix_block: MatrixBlock):
 	randomize()
