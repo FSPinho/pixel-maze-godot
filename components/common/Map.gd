@@ -12,7 +12,7 @@ var bounds_outer = null
 var cell_size = 10
 
 func _draw():
-	draw_rect(self.bounds_outer, Color(0, 0, 0, 0.6), true, 10, true)
+	draw_rect(self.bounds_outer, Color(1, 1, 1, 0.75), true, 10, true)
 
 func _ready():
 	self.bounds = Rect2(
@@ -54,7 +54,7 @@ func _process(delta):
 		for j in matrix.width:
 			var block = Store.get_game_block(i, j)
 			
-			if block.exit:
+			if block.type == Config.BlockType.EXIT:
 				if not block.instance_mapped and Store.get_game_show_exit():
 					var node = Node2D.new()
 					node.position = self.bounds.position + Vector2(

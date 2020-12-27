@@ -13,6 +13,7 @@ const BLOCK_100_003_TEXTURE = preload("res://sprites/brick-100-003.png")
 const BLOCK_1000_001_TEXTURE = preload("res://sprites/brick-1000-001.png")
 const BLOCK_1000_002_TEXTURE = preload("res://sprites/brick-1000-002.png")
 const BLOCK_1000_003_TEXTURE = preload("res://sprites/brick-1000-003.png")
+const BLOCK_EXIT = preload("res://sprites/exit.png")
 
 ##
 # Properties
@@ -49,7 +50,14 @@ func set_matrix_block(matrix_block: MatrixBlock):
 	
 	self.sprites = []
 	
-	if self.matrix_block.type == Config.BlockType.STONE:
+	if self.matrix_block.type == Config.BlockType.EXIT:
+		$Destroyable/Particles.texture = BLOCK_EXIT
+		self.add_to_group(Config.GROUP_BLOCK_EXIT)
+		
+		var sprite = Sprite.new()
+		sprite.texture = BLOCK_EXIT
+		self.sprites.append(sprite)
+	elif self.matrix_block.type == Config.BlockType.STONE:
 		$Destroyable/Particles.texture = BLOCK_STONE_TEXTURE
 		self.add_to_group(Config.GROUP_BLOCK_STONE)
 		
@@ -57,7 +65,7 @@ func set_matrix_block(matrix_block: MatrixBlock):
 		sprite.texture = BLOCK_STONE_TEXTURE
 		self.sprites.append(sprite)
 		
-	if self.matrix_block.type == Config.BlockType.GLASS:
+	elif self.matrix_block.type == Config.BlockType.GLASS:
 		$Destroyable/Particles.texture = BLOCK_GLASS_TEXTURE
 		self.add_to_group(Config.GROUP_BLOCK_GLASS)
 		
@@ -65,7 +73,7 @@ func set_matrix_block(matrix_block: MatrixBlock):
 		sprite.texture = BLOCK_GLASS_TEXTURE
 		self.sprites.append(sprite)
 	
-	if self.matrix_block.type == Config.BlockType._10:
+	elif self.matrix_block.type == Config.BlockType._10:
 		$Destroyable/Particles.texture = BLOCK_10_002_TEXTURE
 		self.add_to_group(Config.GROUP_BLOCK_10)
 		
@@ -79,7 +87,7 @@ func set_matrix_block(matrix_block: MatrixBlock):
 		self.sprites.append(sprite2)
 		self.sprites.append(sprite3)
 	
-	if self.matrix_block.type == Config.BlockType._100:
+	elif self.matrix_block.type == Config.BlockType._100:
 		$Destroyable/Particles.texture = BLOCK_100_002_TEXTURE
 		self.add_to_group(Config.GROUP_BLOCK_100)
 		
@@ -93,7 +101,7 @@ func set_matrix_block(matrix_block: MatrixBlock):
 		self.sprites.append(sprite2)
 		self.sprites.append(sprite3)
 	
-	if self.matrix_block.type == Config.BlockType._1000:
+	elif self.matrix_block.type == Config.BlockType._1000:
 		$Destroyable/Particles.texture = BLOCK_1000_002_TEXTURE
 		self.add_to_group(Config.GROUP_BLOCK_1000)
 		
@@ -127,4 +135,17 @@ func set_matrix_block(matrix_block: MatrixBlock):
 func destroy():
 	self.matrix_block.alive = false
 	$Collision.disabled = true
-	$Destroyable.die() 
+	
+	if self.matrix_block.type == Config.BlockType.EXIT:
+		$SoundWin.play()
+	else:
+		$Destroyable.die() 
+		
+		if self.matrix_block.type == Config.BlockType.GLASS:
+			$SoundBreak.play()
+		elif self.matrix_block.type == Config.BlockType._10:
+			$SoundBreakGlass1.play()
+		elif self.matrix_block.type == Config.BlockType._100:
+			$SoundBreakGlass2.play()
+		elif self.matrix_block.type == Config.BlockType._1000:
+			$SoundBreakGlass2.play()

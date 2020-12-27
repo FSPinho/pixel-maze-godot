@@ -157,7 +157,7 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 
 	var end = path_max[path_max.size() - 1]
 	self.end = [end[0], end[1]]
-	self.get_block(end[0], end[1]).exit = true
+	self.get_block(end[0], end[1]).type = Config.BlockType.EXIT
 
 func _check_around(i, j, ri, rj):
 	var near = 0

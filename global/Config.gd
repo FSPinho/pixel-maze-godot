@@ -12,8 +12,8 @@ const BLOCK_GLASS_PERCENT = 0.25
 const BLOCK_10_PERCENT = 0.018
 const BLOCK_100_PERCENT = 0.0058
 const BLOCK_1000_PERCENT = 0.00258
-const WORLD_WIDTH = 41
-const WORLD_HEIGHT = 41
+const WORLD_WIDTH = 21
+const WORLD_HEIGHT = 21
 
 const CIRCLE_QUALITY = 64
 
@@ -23,6 +23,7 @@ const GROUP_BLOCK_GLASS = "g-block-glass"
 const GROUP_BLOCK_10 = "g-block-10"
 const GROUP_BLOCK_100 = "g-block-100"
 const GROUP_BLOCK_1000 = "g-block-1000"
+const GROUP_BLOCK_EXIT = "g-block-exit"
 const GROUP_RIPPLE = "g-ripples"
 const GROUP_ENEMY = "g-enemies"
 
@@ -38,11 +39,12 @@ enum SwipeDirection {
 
 enum BlockType {
 	NONE = 0
-	STONE = 1,
-	GLASS = 2,
-	_10 = 3,
-	_100 = 4,
-	_1000 = 5,
+	EXIT = 1
+	STONE = 2,
+	GLASS = 3,
+	_10 = 4,
+	_100 = 5,
+	_1000 = 6,
 }
 
 enum GameState {

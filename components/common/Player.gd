@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var Ripple = preload("res://components/common/Ripple.tscn")
-var BLOCK_GLASS_TEXTURE = preload("res://sprites/brick-glass.png")
+var PLAYER_TEXTURE = preload("res://sprites/player.png")
 
 ##
 # Constants
@@ -42,7 +42,7 @@ var move_delay = 0.6
 
 func _ready():
 	$Collision.shape.radius = size / 2
-	$Destroyable/Particles.texture = BLOCK_GLASS_TEXTURE
+	$Destroyable/Particles.texture = PLAYER_TEXTURE
 	$Destroyable/Particles.process_material.scale = 0.05
 	$SwipeDetector.connect("on_swipe", self, "set_direction")
 
@@ -177,14 +177,18 @@ func on_collision(collision: KinematicCollision2D):
 		collision.collider.is_in_group(Config.GROUP_BLOCK_1000):
 		collision.collider.destroy()
 	
-	if collision.collider.is_in_group(Config.GROUP_BLOCK_10):
+	elif collision.collider.is_in_group(Config.GROUP_BLOCK_10):
 		Store.add_game_points(10)
 	
-	if collision.collider.is_in_group(Config.GROUP_BLOCK_100):
+	elif collision.collider.is_in_group(Config.GROUP_BLOCK_100):
 		Store.add_game_points(100)
 	
-	if collision.collider.is_in_group(Config.GROUP_BLOCK_1000):
+	elif collision.collider.is_in_group(Config.GROUP_BLOCK_1000):
 		Store.add_game_points(1000)
+	
+	elif collision.collider.is_in_group(Config.GROUP_BLOCK_EXIT):
+		collision.collider.destroy()
+		die()
 	 
 func die():
 	$Destroyable.die()
