@@ -2,7 +2,13 @@ extends StaticBody2D
 
 const MatrixBlock = preload("res://types/MatrixBlock.gd")
 
-const BLOCK_STONE_TEXTURE = preload("res://sprites/brick-stone.png")
+const BLOCK_STONE_CLOSED_TEXTURE = preload("res://sprites/brick-stone-001.png")
+const BLOCK_STONE_LINE_TEXTURE = preload("res://sprites/brick-stone-002.png")
+const BLOCK_STONE_CROSSED_TEXTURE = preload("res://sprites/brick-stone-003.png")
+const BLOCK_STONE_CORNER_TEXTURE = preload("res://sprites/brick-stone-004.png")
+const BLOCK_STONE_END_TEXTURE = preload("res://sprites/brick-stone-005.png")
+const BLOCK_STONE_T_TEXTURE = preload("res://sprites/brick-stone-006.png")
+
 const BLOCK_GLASS_TEXTURE = preload("res://sprites/brick-glass.png")
 const BLOCK_10_001_TEXTURE = preload("res://sprites/brick-10-001.png")
 const BLOCK_10_002_TEXTURE = preload("res://sprites/brick-10-002.png")
@@ -58,11 +64,68 @@ func set_matrix_block(matrix_block: MatrixBlock):
 		sprite.texture = BLOCK_EXIT
 		self.sprites.append(sprite)
 	elif self.matrix_block.type == Config.BlockType.STONE:
-		$Destroyable/Particles.texture = BLOCK_STONE_TEXTURE
 		self.add_to_group(Config.GROUP_BLOCK_STONE)
-		
 		var sprite = Sprite.new()
-		sprite.texture = BLOCK_STONE_TEXTURE
+		
+		if self.matrix_block.shape == Config.BlockShape.CLOSED:
+			$Destroyable/Particles.texture = BLOCK_STONE_CLOSED_TEXTURE	
+			sprite.texture = BLOCK_STONE_CLOSED_TEXTURE
+		if self.matrix_block.shape == Config.BlockShape.CROSSED:
+			$Destroyable/Particles.texture = BLOCK_STONE_CROSSED_TEXTURE	
+			sprite.texture = BLOCK_STONE_CROSSED_TEXTURE
+		if self.matrix_block.shape == Config.BlockShape.HORIZONTAL:
+			$Destroyable/Particles.texture = BLOCK_STONE_LINE_TEXTURE	
+			sprite.texture = BLOCK_STONE_LINE_TEXTURE
+		if self.matrix_block.shape == Config.BlockShape.VERTICAL:
+			$Destroyable/Particles.texture = BLOCK_STONE_LINE_TEXTURE	
+			sprite.texture = BLOCK_STONE_LINE_TEXTURE
+			sprite.rotation = PI / 2.0
+		if self.matrix_block.shape == Config.BlockShape.TOP_LEFT:
+			$Destroyable/Particles.texture = BLOCK_STONE_CORNER_TEXTURE	
+			sprite.texture = BLOCK_STONE_CORNER_TEXTURE
+			sprite.rotation = PI / -2.0
+		if self.matrix_block.shape == Config.BlockShape.TOP_RIGHT:
+			$Destroyable/Particles.texture = BLOCK_STONE_CORNER_TEXTURE	
+			sprite.texture = BLOCK_STONE_CORNER_TEXTURE
+		if self.matrix_block.shape == Config.BlockShape.BOTTOM_LEFT:
+			$Destroyable/Particles.texture = BLOCK_STONE_CORNER_TEXTURE	
+			sprite.texture = BLOCK_STONE_CORNER_TEXTURE
+			sprite.rotation = PI
+		if self.matrix_block.shape == Config.BlockShape.BOTTOM_RIGHT:
+			$Destroyable/Particles.texture = BLOCK_STONE_CORNER_TEXTURE	
+			sprite.texture = BLOCK_STONE_CORNER_TEXTURE
+			sprite.rotation = PI / 2.0
+		if self.matrix_block.shape == Config.BlockShape.T_TOP:
+			$Destroyable/Particles.texture = BLOCK_STONE_T_TEXTURE	
+			sprite.texture = BLOCK_STONE_T_TEXTURE
+			sprite.rotation = PI / 2.0
+		if self.matrix_block.shape == Config.BlockShape.T_BOTTOM:
+			$Destroyable/Particles.texture = BLOCK_STONE_T_TEXTURE	
+			sprite.texture = BLOCK_STONE_T_TEXTURE
+			sprite.rotation = PI / -2.0
+		if self.matrix_block.shape == Config.BlockShape.T_LEFT:
+			$Destroyable/Particles.texture = BLOCK_STONE_T_TEXTURE	
+			sprite.texture = BLOCK_STONE_T_TEXTURE
+		if self.matrix_block.shape == Config.BlockShape.T_RIGHT:
+			$Destroyable/Particles.texture = BLOCK_STONE_T_TEXTURE	
+			sprite.texture = BLOCK_STONE_T_TEXTURE
+			sprite.rotation = PI
+		if self.matrix_block.shape == Config.BlockShape.END_TOP:
+			$Destroyable/Particles.texture = BLOCK_STONE_END_TEXTURE	
+			sprite.texture = BLOCK_STONE_END_TEXTURE
+			sprite.rotation = PI / 2.0
+		if self.matrix_block.shape == Config.BlockShape.END_LEFT:
+			$Destroyable/Particles.texture = BLOCK_STONE_END_TEXTURE	
+			sprite.texture = BLOCK_STONE_END_TEXTURE
+		if self.matrix_block.shape == Config.BlockShape.END_RIGHT:
+			$Destroyable/Particles.texture = BLOCK_STONE_END_TEXTURE	
+			sprite.texture = BLOCK_STONE_END_TEXTURE
+			sprite.rotation = PI
+		if self.matrix_block.shape == Config.BlockShape.END_BOTTOM:
+			$Destroyable/Particles.texture = BLOCK_STONE_END_TEXTURE	
+			sprite.texture = BLOCK_STONE_END_TEXTURE
+			sprite.rotation = PI / -2.0
+				
 		self.sprites.append(sprite)
 		
 	elif self.matrix_block.type == Config.BlockType.GLASS:
@@ -131,6 +194,12 @@ func set_matrix_block(matrix_block: MatrixBlock):
 		self.sprites_scale = Vector2(Config.BLOCK_SIZE, Config.BLOCK_SIZE) / sprite.texture.get_size()
 		$Destroyable/Particles.process_material.scale = 0.5 * self.sprites_scale.x
 		add_child(sprite)
+		
+	# var label = Label.new()
+	# label.text = self.matrix_block.label
+	# label.rect_scale = Vector2(2, 2)
+	# label.rect_position = Vector2(-100, 0)
+	# self.add_child(label)
 	
 func destroy():
 	self.matrix_block.alive = false

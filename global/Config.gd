@@ -12,8 +12,8 @@ const BLOCK_GLASS_PERCENT = 0.25
 const BLOCK_10_PERCENT = 0.018
 const BLOCK_100_PERCENT = 0.0058
 const BLOCK_1000_PERCENT = 0.00258
-const WORLD_WIDTH = 21
-const WORLD_HEIGHT = 21
+const WORLD_WIDTH = 11
+const WORLD_HEIGHT = 11
 
 const CIRCLE_QUALITY = 64
 
@@ -45,6 +45,25 @@ enum BlockType {
 	_10 = 4,
 	_100 = 5,
 	_1000 = 6,
+}
+
+enum BlockShape {
+	CLOSED = 1
+	CROSSED = 2
+	TOP_LEFT = 3
+	TOP_RIGHT = 4
+	BOTTOM_LEFT = 5
+	BOTTOM_RIGHT = 6
+	T_TOP = 7
+	T_LEFT = 8
+	T_RIGHT = 9
+	T_BOTTOM = 10
+	VERTICAL = 11
+	HORIZONTAL = 12
+	END_TOP = 13
+	END_LEFT = 14
+	END_RIGHT = 15
+	END_BOTTOM = 16
 }
 
 enum GameState {

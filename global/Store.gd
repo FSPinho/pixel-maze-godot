@@ -15,7 +15,7 @@ signal on_game_end
 var game_state: int = Config.GameState.IDLE
 var game_matrix: Matrix = null
 var game_player_position: Vector2 = Vector2(0, 0)
-var game_show_exit = false
+var game_show_exit = true
 var game_points = 0.0
 var game_points_show_exit = 500.0
 

@@ -158,6 +158,11 @@ func _init(w: int = Config.WORLD_WIDTH, h: int = Config.WORLD_HEIGHT):
 	var end = path_max[path_max.size() - 1]
 	self.end = [end[0], end[1]]
 	self.get_block(end[0], end[1]).type = Config.BlockType.EXIT
+	
+	for i in range(self.height):
+		for j in range(self.width):
+			get_block(i, j).shape = _get_shape(i, j)
+			print (get_block(i, j).shape)
 
 func _check_around(i, j, ri, rj):
 	var near = 0
@@ -166,6 +171,56 @@ func _check_around(i, j, ri, rj):
 			if self.get_block(_i, _j).type != Config.BlockType.NONE:
 				near += 1
 	return near >= 6
+
+func _get_shape(i, j):
+	var w = self.width - 1
+	var h = self.height - 1
+	var has_up = i > 0 and get_block(i - 1, j).type == Config.BlockType.STONE
+	var has_do = i < h and get_block(i + 1, j).type == Config.BlockType.STONE
+	var has_le = j > 0 and get_block(i, j - 1).type == Config.BlockType.STONE
+	var has_ri = j < w and get_block(i, j + 1).type == Config.BlockType.STONE 
+	
+	get_block(i, j).label = "u=%s d=%s l=%s r=%s" % [
+		"t" if has_up else "f", 
+		"t" if has_do else "f", 
+		"t" if has_le else "f", 
+		"t" if has_ri else "f"
+	]
+	
+	if has_up and has_do and has_le and has_ri:
+		return Config.BlockShape.CROSSED
+	if not(has_up or has_do or has_le or has_ri):
+		return Config.BlockShape.CLOSED
+	if has_up and has_le and has_do:
+		return Config.BlockShape.T_LEFT
+	if has_up and has_ri and has_do:
+		return Config.BlockShape.T_RIGHT
+	if has_le and has_up and has_ri:
+		return Config.BlockShape.T_TOP
+	if has_le and has_do and has_ri:
+		return Config.BlockShape.T_BOTTOM
+	if has_up and has_le:
+		return Config.BlockShape.BOTTOM_RIGHT
+	if has_up and has_ri:
+		return Config.BlockShape.BOTTOM_LEFT
+	if has_do and has_le:
+		return Config.BlockShape.TOP_RIGHT
+	if has_do and has_ri:
+		return Config.BlockShape.TOP_LEFT
+	if has_up and has_do:
+		return Config.BlockShape.VERTICAL
+	if has_le and has_ri:
+		return Config.BlockShape.HORIZONTAL
+	if has_up:
+		return Config.BlockShape.END_TOP
+	if has_le:
+		return Config.BlockShape.END_LEFT
+	if has_ri:
+		return Config.BlockShape.END_RIGHT
+	if has_do:
+		return Config.BlockShape.END_BOTTOM
+	
+	return Config.BlockShape.CLOSED
 	
 func set_block(i: int, j: int, v: MatrixBlock) -> void:
 	self._matrix["%s %s" % [str(i), str(j)]] = v

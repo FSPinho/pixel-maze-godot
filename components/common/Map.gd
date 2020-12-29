@@ -12,7 +12,7 @@ var bounds_outer = null
 var cell_size = 10
 
 func _draw():
-	draw_rect(self.bounds_outer, Color(1, 1, 1, 0.75), true, 10, true)
+	draw_rect(self.bounds_outer, Color(0.8, 0.8, 0.8, 0.75), true, 10, true)
 
 func _ready():
 	self.bounds = Rect2(
@@ -63,6 +63,7 @@ func _process(delta):
 					node.set_script(MapCell)
 					node.cell_size = cell_size
 					node.color = Color(0, 0, 1)
+					node.exit = true
 					self.add_child(node)
 					block.instance_mapped = node
 			else:

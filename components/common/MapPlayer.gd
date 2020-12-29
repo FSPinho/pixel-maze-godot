@@ -6,4 +6,4 @@ extends Node2D
 var cell_size = 0
 
 func _draw():
-	draw_circle(Vector2(0, 0), cell_size / 4, Color.white)
+	draw_circle(Vector2(0, 0), cell_size / 2, Color.white)

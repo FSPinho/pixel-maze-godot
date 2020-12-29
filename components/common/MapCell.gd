@@ -5,6 +5,7 @@ extends Node2D
 
 var cell_size = 0
 var color = Color(0, 0, 0, 0.75)
+var exit = false
 
 func _ready():
 	self.scale = Vector2(0, 0)

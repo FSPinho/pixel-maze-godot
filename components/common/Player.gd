@@ -177,7 +177,7 @@ func on_collision(collision: KinematicCollision2D):
 		collision.collider.is_in_group(Config.GROUP_BLOCK_1000):
 		collision.collider.destroy()
 	
-	elif collision.collider.is_in_group(Config.GROUP_BLOCK_10):
+	if collision.collider.is_in_group(Config.GROUP_BLOCK_10):
 		Store.add_game_points(10)
 	
 	elif collision.collider.is_in_group(Config.GROUP_BLOCK_100):

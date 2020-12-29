@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://sprites/prize-10.png" type="Texture" id=1]
+[ext_resource path="res://sprites/prize-1000.png" type="Texture" id=2]
+[ext_resource path="res://sprites/prize-100.png" type="Texture" id=3]
+[ext_resource path="res://components/common/Prize.gd" type="Script" id=4]
+
+[node name="Prize" type="Node2D"]
+scale = Vector2( 0.4, 0.4 )
+script = ExtResource( 4 )
+
+[node name="Prize1000" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Prize100" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="Prize10" type="Sprite" parent="."]
+texture = ExtResource( 1 )
