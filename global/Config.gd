@@ -8,7 +8,7 @@ var VIEWPORT_WIDTH = max(OS.get_window_size().x, 1080)
 var VIEWPORT_HEIGHT = max(OS.get_window_size().y, 1920)
 
 const BLOCK_SIZE = 560.0 * 0.45
-const BLOCK_GLASS_PERCENT = 0.25
+const BLOCK_GLASS_PERCENT = 0.2
 const BLOCK_10_PERCENT = 0.018
 const BLOCK_100_PERCENT = 0.0058
 const BLOCK_1000_PERCENT = 0.00258
